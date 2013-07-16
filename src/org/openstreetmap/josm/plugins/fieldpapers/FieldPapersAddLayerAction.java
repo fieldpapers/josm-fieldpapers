@@ -20,79 +20,82 @@ import org.openstreetmap.josm.data.coor.LatLon;
 public class FieldPapersAddLayerAction extends JosmAction {
 
     public FieldPapersAddLayerAction() {
-        super(tr("Scanned Map..."), "walkingpapers",
-            tr("Display a map that was previously scanned and uploaded to walking-papers.org"), null, false);
+        super(tr("Scanned Map..."), "fieldpapers",
+            tr("Display a map that was previously scanned and uploaded to fieldpapers.org"), null, false);
     }
 
     public void actionPerformed(ActionEvent e) {
         String wpid = JOptionPane.showInputDialog(Main.parent,
-            tr("Enter a walking-papers.org URL or ID (the bit after the ?id= in the URL)"),
-                Main.pref.get("walkingpapers.last-used-id"));
+            tr("Enter a fieldpapers.org snapshot URL"),
+                Main.pref.get("fieldpapers.last-used-id"));
 
         if (wpid == null || wpid.equals("")) return;
 
         // Grab id= from the URL if we need to, otherwise get an ID
-        String mungedWpId = this.getWalkingPapersId(wpid);
+        String mungedWpId = this.getFieldPapersId(wpid);
 
         if (mungedWpId == null || mungedWpId.equals("")) return;
 
-        // screen-scrape details about this id from walking-papers.org
-        String wpUrl = Main.pref.get("walkingpapers.base-url", "http://walking-papers.org/") + "scan.php?id=" + mungedWpId;
+        // screen-scrape details about this id from fieldpapers.org
+        // e.g. http://fieldpapers.org/snapshot.php?id=nq78w6wl
+        String wpUrl = Main.pref.get("fieldpapers.base-url", "http://fieldpapers.org/") + "snapshot.php?id=" + mungedWpId;
 
-        Pattern spanPattern = Pattern.compile("<span class=\"(\\S+)\">(\\S+)</span>");
+        Pattern spanPattern = Pattern.compile("var (\\S*) = (\\S*);");
         Matcher m;
 
+        String boundsStr = "";
+        String urlBase = null;
         double north = 0;
         double south = 0;
         double east = 0;
         double west = 0;
-        int minz = -1;
-        int maxz = -1;
-        String tile = null;
 
         try {
             BufferedReader r = new BufferedReader(new InputStreamReader(new URL(wpUrl).openStream(), "utf-8"));
             for (String line = r.readLine(); line != null; line = r.readLine()) {
                 m = spanPattern.matcher(line);
                 if (m.find()) {
-                    if ("tile".equals(m.group(1))) tile = m.group(2);
-                    else if ("north".equals(m.group(1))) north = Double.parseDouble(m.group(2));
-                    else if ("south".equals(m.group(1))) south = Double.parseDouble(m.group(2));
-                    else if ("east".equals(m.group(1))) east = Double.parseDouble(m.group(2));
-                    else if ("west".equals(m.group(1))) west = Double.parseDouble(m.group(2));
-                    else if ("minzoom".equals(m.group(1))) minz = Integer.parseInt(m.group(2));
-                    else if ("maxzoom".equals(m.group(1))) maxz = Integer.parseInt(m.group(2));
+                    if ("geojpeg_bounds".equals(m.group(1))) boundsStr = m.group(2);
+                    else if ("base_provider".equals(m.group(1))) urlBase = m.group(2);
                 }
             }
             r.close();
-            if ((tile == null) || (north == 0 && south == 0) || (east == 0 && west == 0)) throw new Exception();
+            if (!boundsStr.isEmpty()) {
+                String[] boundSplits = boundsStr.replaceAll("\"", "").split(",");
+                south = Double.parseDouble(boundSplits[0]);
+                west = Double.parseDouble(boundSplits[1]);
+                north = Double.parseDouble(boundSplits[2]);
+                east = Double.parseDouble(boundSplits[3]);
+            }
+
+            if (!urlBase.isEmpty()) {
+                urlBase = urlBase.replaceAll("\\\\", "").replaceAll("\"", "");
+            }
+
+            if (urlBase == null || (north == 0 && south == 0) || (east == 0 && west == 0)) throw new Exception();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(Main.parent,tr("Could not read information from walking-papers.org the id \"{0}\"", mungedWpId));
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(Main.parent,tr("Could not read information for the id \"{0}\" from fieldpapers.org", mungedWpId));
             return;
         }
 
-
-        //http://walking-papers.org/scan.php?id=rmvdr3lq
-        // The server is apparently broken and returning the WpId in the URL twice
-        // which makes it return errors when we fetch it.  So, strip out one of
-        // the dups.  This is a hack and needs to get removed when the server
-        // is fixed.
-        tile = tile.replaceFirst(mungedWpId+"/"+mungedWpId, mungedWpId);
-        Main.pref.put("walkingpapers.last-used-id", mungedWpId);
+        String tileUrl = urlBase + "/{zoom}/{x}/{y}.jpg";
+        Main.pref.put("fieldpapers.last-used-id", mungedWpId);
 
         Bounds b = new Bounds(new LatLon(south, west), new LatLon(north, east));
 
-        FieldPapersLayer wpl = new FieldPapersLayer(mungedWpId, tile, b, minz, maxz);
+        FieldPapersLayer wpl = new FieldPapersLayer(mungedWpId, tileUrl, b, 13, 18);
         Main.main.addLayer(wpl);
 
     }
 
-    private static String getWalkingPapersId(String wpid) {
+    private String getFieldPapersId(String wpid) {
         if (!wpid.contains("id=")) {
             return wpid;
         } else {
-            // To match e.g. http://walking-papers.org/scan.php?id=53h78bbx
-            final Pattern pattern = Pattern.compile("\\?id=(\\S+)");
+            // To match e.g. http://fieldpapers.org/snapshot.php?id=tz3fq6xl
+            // or http://fieldpapers.org/snapshot.php?id=nq78w6wl#15/41.8966/-87.6847
+            final Pattern pattern = Pattern.compile("snapshot.php\\?id=([a-z0-9]*)");
             final Matcher matcher = pattern.matcher(wpid);
             final boolean found   = matcher.find();
 

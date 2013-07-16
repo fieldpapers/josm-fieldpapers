@@ -34,7 +34,7 @@ public class FieldPapersKey {
         this.level = level;
         if (level <= 0 || x < 0 || y < 0) {
             this.valid = false;
-            System.err.println("invalid WalkingPapersKey("+level+", "+x+", "+y+")");
+            System.err.println("invalid FieldPapersKey("+level+", "+x+", "+y+")");
         } else {
             this.valid = true;
         }
@@ -72,7 +72,7 @@ public class FieldPapersKey {
      */
     @Override
     public String toString() {
-        return "WalkingPapersKey(x=" + this.x + ",y=" + this.y + ",level=" + level + ")";
+        return "FieldPapersKey(x=" + this.x + ",y=" + this.y + ",level=" + level + ")";
     }
 
 }

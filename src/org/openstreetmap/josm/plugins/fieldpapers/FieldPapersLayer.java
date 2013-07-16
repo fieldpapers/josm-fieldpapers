@@ -27,8 +27,9 @@ import org.openstreetmap.josm.gui.layer.Layer;
 import org.openstreetmap.josm.tools.ImageProvider;
 
 /**
- * Class that displays a slippy map layer. Adapted from SlippyMap plugin for Walking Papers use.
+ * Class that displays a slippy map layer. Adapted from SlippyMap plugin for Field Papers use.
  *
+ * @author Ian Dees <ian.dees@gmail.com>
  * @author Frederik Ramm <frederik@remote.org>
  * @author LuVar <lubomir.varga@freemap.sk>
  * @author Dave Hansen <dave@sr71.net>
@@ -37,7 +38,7 @@ import org.openstreetmap.josm.tools.ImageProvider;
 public class FieldPapersLayer extends Layer implements ImageObserver {
     /**
      * Actual zoom lvl. Initial zoom lvl is set to
-     * {@link WalkingPapersPreferences#getMinZoomLvl()}.
+     * {@link FieldPapersPreferences#getMinZoomLvl()}.
      */
     private int currentZoomLevel;
     private HashMap<FieldPapersKey, FieldPapersTile> tileStorage = null;
@@ -52,24 +53,23 @@ public class FieldPapersLayer extends Layer implements ImageObserver {
     private int minzoom, maxzoom;
     private Bounds printBounds;
     private String tileUrlTemplate;
-    private String walkingPapersId;
+    private String fieldPapersId;
 
-    @SuppressWarnings("serial")
-    public FieldPapersLayer(String id, String tile, Bounds b, int minz, int maxz) {
-        super(tr("Walking Papers: {0}", id));
+    public FieldPapersLayer(String id, String tileUrlTemplate, Bounds b, int minz, int maxz) {
+        super(tr("Field Papers: {0}", id));
         setBackgroundLayer(true);
-        walkingPapersId = id;
+        this.fieldPapersId = id;
 
-        tileUrlTemplate = tile;
+        this.tileUrlTemplate = tileUrlTemplate;
         this.printBounds = b;
         this.minzoom = minz; this.maxzoom = maxz;
-        currentZoomLevel = minz;
+        this.currentZoomLevel = minz;
 
         clearTileStorage();
 
         MapView.addLayerChangeListener(new LayerChangeListener() {
             public void activeLayerChange(Layer oldLayer, Layer newLayer) {
-                // if user changes to a walking papers layer, zoom there just as if
+                // if user changes to a field papers layer, zoom there just as if
                 // it was newly added
                 layerAdded(newLayer);
             }
@@ -279,7 +279,7 @@ public class FieldPapersLayer extends Layer implements ImageObserver {
 
         if (count == 0)
         {
-            //System.out.println("no images on " + walkingPapersId + ", return");
+            //System.out.println("no images on " + fieldPapersId + ", return");
             return;
         }
 
@@ -337,7 +337,7 @@ public class FieldPapersLayer extends Layer implements ImageObserver {
 
     @Override
     public Icon getIcon() {
-        return ImageProvider.get("walkingpapers");
+        return ImageProvider.get("fieldpapers");
     }
 
     @Override
@@ -359,7 +359,7 @@ public class FieldPapersLayer extends Layer implements ImageObserver {
 
     @Override
     public String getToolTipText() {
-        return tr("Walking Papers layer ({0}) in zoom {1}", this.getWalkingPapersId(), currentZoomLevel);
+        return tr("Field Papers layer ({0}) in zoom {1}", this.getFieldPapersId(), currentZoomLevel);
     }
 
     @Override
@@ -408,15 +408,15 @@ public class FieldPapersLayer extends Layer implements ImageObserver {
         return !done;
     }
 
-    public String getWalkingPapersId() {
-        return walkingPapersId;
+    public String getFieldPapersId() {
+        return fieldPapersId;
     }
 
     public URL formatImageUrl(int x, int y, int z) {
         String urlstr = tileUrlTemplate.
             replace("{x}", String.valueOf(x)).
             replace("{y}", String.valueOf(y)).
-            replace("{z}", String.valueOf(z));
+            replace("{zoom}", String.valueOf(z));
         try {
             return new URL(urlstr);
         } catch (Exception ex) {

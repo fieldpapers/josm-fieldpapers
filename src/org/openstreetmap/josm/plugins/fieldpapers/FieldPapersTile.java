@@ -7,6 +7,7 @@ import java.net.URL;
 /**
  * Class that contains information about one single slippy map tile.
  *
+ * @author Ian Dees <ian.dees@gmail.com
  * @author Frederik Ramm <frederik@remote.org>
  * @author LuVar <lubomir.varga@freemap.sk>
  * @author Dave Hansen <dave@sr71.net>
