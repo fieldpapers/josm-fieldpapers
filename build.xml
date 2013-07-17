@@ -39,7 +39,7 @@
             <compilerarg value="-Xlint:unchecked"/>
         </javac>
     </target>
-    <target name="dist" depends="compile">
+    <target name="dist" depends="compile,revision">
         <copy todir="${plugin.build.dir}/images">
             <fileset dir="images"/>
         </copy>
@@ -50,12 +50,12 @@
             <manifest>
                 <attribute name="Author" value="${plugin.author}"/>
                 <attribute name="Plugin-Class" value="${plugin.class}"/>
-                <attribute name="Plugin-Date" value="${version.entry.commit.date}"/>
+                <attribute name="Plugin-Date" value="${git.commit.date}"/>
                 <attribute name="Plugin-Description" value="${plugin.description}"/>
                 <attribute name="Plugin-Icon" value="${plugin.icon}"/>
                 <attribute name="Plugin-Link" value="${plugin.link}"/>
                 <attribute name="Plugin-Mainversion" value="${plugin.main.version}"/>
-                <attribute name="Plugin-Version" value="${version.entry.commit.revision}"/>
+                <attribute name="Plugin-Version" value="${git.revision}"/>
             </manifest>
         </jar>
     </target>
@@ -72,6 +72,12 @@
 	            <length string="${git.revision}" trim="yes" length="0" when="greater"/>
 	        </and>
 	    </condition>
+        <exec executable="git" outputproperty="git.commit.date" failifexecutionfails="false" errorproperty="">
+            <arg value="show"/>
+            <arg value="-s"/>
+            <arg value="--format=%ci"/>
+            <arg value="HEAD"/>
+        </exec>
     </target>
     <target name="clean">
         <delete dir="${plugin.build.dir}"/>
