@@ -28,7 +28,7 @@ public class FieldPapersPlugin extends Plugin
     {
         super(info);
         MainMenu menu = Main.main.menu;
-        walkingPapersMenu = menu.addMenu(marktr("Field Papers"), KeyEvent.VK_K, menu.defaultMenuPos, ht("/Plugin/FieldPapers"));
+        walkingPapersMenu = menu.addMenu(marktr("Field Papers"), KeyEvent.VK_K,  menu.getDefaultMenuPos(), ht("/Plugin/FieldPapers"));
         walkingPapersMenu.add(new JMenuItem(new FieldPapersAddLayerAction()));
     }
 }
