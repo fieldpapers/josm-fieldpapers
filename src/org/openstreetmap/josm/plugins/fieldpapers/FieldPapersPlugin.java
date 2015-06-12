@@ -22,13 +22,12 @@ import org.openstreetmap.josm.plugins.PluginInformation;
  */
 public class FieldPapersPlugin extends Plugin
 {
-    static JMenu walkingPapersMenu;
-
     public FieldPapersPlugin(PluginInformation info)
     {
         super(info);
+
         MainMenu menu = Main.main.menu;
-        walkingPapersMenu = menu.addMenu(marktr("Field Papers"), KeyEvent.VK_K,  menu.getDefaultMenuPos(), ht("/Plugin/FieldPapers"));
-        walkingPapersMenu.add(new JMenuItem(new FieldPapersAddLayerAction()));
+        JMenu fpMenu = menu.addMenu(marktr("Field Papers"), KeyEvent.VK_K, menu.getDefaultMenuPos(), ht("/Plugin/FieldPapers"));
+        fpMenu.add(new JMenuItem(new FieldPapersAddLayerAction()));
     }
 }
