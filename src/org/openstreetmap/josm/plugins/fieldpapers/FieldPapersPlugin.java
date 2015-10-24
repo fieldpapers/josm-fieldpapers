@@ -1,7 +1,7 @@
 package org.openstreetmap.josm.plugins.fieldpapers;
 
 import static org.openstreetmap.josm.gui.help.HelpUtil.ht;
-import static org.openstreetmap.josm.tools.I18n.marktr;
+import static org.openstreetmap.josm.tools.I18n.tr;
 
 import java.awt.event.KeyEvent;
 
@@ -27,7 +27,7 @@ public class FieldPapersPlugin extends Plugin
         super(info);
 
         MainMenu menu = Main.main.menu;
-        JMenu fpMenu = menu.addMenu(marktr("Field Papers"), KeyEvent.VK_K, menu.getDefaultMenuPos(), ht("/Plugin/FieldPapers"));
+        JMenu fpMenu = menu.addMenu("Field Papers", tr("Field Papers"), KeyEvent.VK_K, menu.getDefaultMenuPos(), ht("/Plugin/FieldPapers"));
         fpMenu.add(new JMenuItem(new FieldPapersAddLayerAction()));
     }
 }
