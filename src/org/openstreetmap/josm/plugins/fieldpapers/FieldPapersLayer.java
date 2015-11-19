@@ -20,8 +20,7 @@ import org.openstreetmap.josm.gui.layer.TMSLayer;
  */
 public class FieldPapersLayer extends TMSLayer {
     /**
-     * Actual zoom lvl. Initial zoom lvl is set to
-     * {@link FieldPapersPreferences#getMinZoomLvl()}.
+     * Actual zoom lvl. Initial zoom lvl is set to the provided min zoom.
      */
     private int currentZoomLevel;
 
