@@ -16,9 +16,9 @@
     <!-- enter the SVN commit message -->
     <property name="commit.message" value="Changed the constructor signature of the plugin main class"/>
     <!-- enter the *lowest* JOSM version this plugin is currently compatible with -->
-    <property name="plugin.main.version" value="8906"/>
+    <property name="plugin.main.version" value="10273"/>
 
-    <property name="plugin.author" value="Ian Dees"/>
+    <property name="plugin.author" value="Ian Dees, Seth Fitzsimmons"/>
     <property name="plugin.class" value="org.openstreetmap.josm.plugins.fieldpapers.FieldPapersPlugin"/>
     <property name="plugin.description" value="Supports downloading tiled, scanned maps from fieldpapers.org."/>
     <property name="plugin.icon" value="images/preferences/fieldpapers.png"/>
@@ -28,8 +28,8 @@
     <property name="plugin.dist.dir" value="../josm/dist"/>
     <property name="plugin.build.dir" value="build"/>
     <property name="plugin.jar" value="${plugin.dist.dir}/${ant.project.name}.jar"/>
-    <property name="ant.build.javac.source" value="1.5"/>
-    <property name="ant.build.javac.target" value="1.5"/>
+    <property name="ant.build.javac.source" value="1.8"/>
+    <property name="ant.build.javac.target" value="1.8"/>
     <target name="init">
         <mkdir dir="${plugin.build.dir}"/>
     </target>

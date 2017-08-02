@@ -9,7 +9,8 @@ import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.swing.*;
+import javax.swing.JOptionPane;
+
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,7 +64,7 @@ public class FieldPapersAddLayerAction extends JosmAction {
             Bounds b = new Bounds(new LatLon(south, west), new LatLon(north, east));
 
             FieldPapersLayer wpl = new FieldPapersLayer(id, tileUrl, b, minZoom, maxZoom);
-            Main.main.addLayer(wpl);
+            Main.getLayerManager().addLayer(wpl);
 
         } catch (IOException ex) {
             ex.printStackTrace();
