@@ -1,0 +1,25 @@
+language: java
+jdk:
+  - oraclejdk9
+  - oraclejdk8
+  - openjdk8
+script: ./gradlew build compileMinJosmVersion && cp -T `find build/libs/*.jar | head -1` "build/libs/fieldpapers.jar"
+
+# Release the plugin via GitHub releases when pushing a tag
+deploy:
+  provider: releases
+  file_glob: true
+  api_key: "${GH_TOKEN}"
+  file:
+    - "build/libs/fieldpapers.jar"
+    - "build/tmp/jar/MANIFEST.MF"
+  skip_cleanup: true
+  on:
+    condition: "$DEPLOY_GITHUB_RELEASES = true"
+    tags: true
+    jdk: openjdk8
+
+matrix:
+  fast_finish: true
+  allow_failures:
+  - jdk: oraclejdk9
