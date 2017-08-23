@@ -4,13 +4,20 @@ import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.LatLon;
+import org.openstreetmap.josm.gui.ExtendedDialog;
+import org.openstreetmap.josm.gui.widgets.JosmTextField;
+import org.openstreetmap.josm.tools.GBC;
+import org.openstreetmap.josm.tools.Utils;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,10 +35,29 @@ public class FieldPapersAddLayerAction extends JosmAction {
     }
 
     public void actionPerformed(ActionEvent e) {
-        String url = JOptionPane.showInputDialog(Main.parent,
-            tr("Enter a fieldpapers.org snapshot URL"),
-                Main.pref.get("fieldpapers.last-used-id"));
+        JPanel panel = new JPanel(new GridBagLayout());
 
+        // snapshot URL selection
+        panel.add(new JLabel(tr("Enter a fieldpapers.org snapshot URL")), GBC.eol());
+        JosmTextField snapshotAddress = new JosmTextField(Main.pref.get("fieldpapers.last-used-id"));
+        snapshotAddress.setToolTipText(tr("Enter an URL from where scanned map should be downloaded"));
+        panel.add(snapshotAddress, GBC.eop().fill(GBC.BOTH));
+
+        ExtendedDialog dialog = new ExtendedDialog(Main.parent,
+                tr("Download Snapshot"),
+                tr("Download URL"), tr("Cancel"))
+            .setContent(panel, false)
+            .setButtonIcons("download", "cancel")
+            .setToolTipTexts(
+                tr("Start downloading scanned map"),
+                tr("Close dialog and cancel downloading"));
+
+        if (dialog.showDialog().getValue() == 1) {
+            openUrl(Utils.strip(snapshotAddress.getText()));
+        }
+    }
+
+    public void openUrl(String url) {
         if (url == null || url.equals("")) return;
 
         if (!url.startsWith("http")) {
