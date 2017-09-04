@@ -1,0 +1,35 @@
+plugins {
+  id "org.openstreetmap.josm.gradle.plugin" version "0.1.6"
+}
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply from: 'gradle/version-functions.gradle'
+
+sourceCompatibility = '1.8'
+version = getVersionName()
+
+sourceSets {
+  main {
+    java {
+      srcDirs = ['src']
+    }
+    resources {
+      srcDirs = ["$projectDir"]
+      include 'data/**'
+      include 'images/**'
+      include 'README'
+    }
+  }
+}
+
+josm {
+  jarName = 'fieldpapers.jar'
+}
+
+eclipse.project.name = 'JOSM-fieldpapers'
+eclipseClasspath.dependsOn cleanEclipseClasspath
+eclipseProject.dependsOn cleanEclipseProject
+
+tasks.withType(Javadoc) {
+  failOnError false
+}
