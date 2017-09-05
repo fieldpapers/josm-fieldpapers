@@ -4,6 +4,7 @@ import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.LatLon;
+import org.openstreetmap.josm.gui.MainApplication;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -64,7 +65,7 @@ public class FieldPapersAddLayerAction extends JosmAction {
             Bounds b = new Bounds(new LatLon(south, west), new LatLon(north, east));
 
             FieldPapersLayer wpl = new FieldPapersLayer(id, tileUrl, b, minZoom, maxZoom);
-            Main.getLayerManager().addLayer(wpl);
+            MainApplication.getLayerManager().addLayer(wpl);
 
         } catch (IOException ex) {
             ex.printStackTrace();

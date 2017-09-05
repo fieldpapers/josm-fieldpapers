@@ -8,7 +8,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import org.openstreetmap.josm.Main;
+import org.openstreetmap.josm.gui.MainApplication;
 import org.openstreetmap.josm.gui.MainMenu;
 import org.openstreetmap.josm.plugins.Plugin;
 import org.openstreetmap.josm.plugins.PluginInformation;
@@ -26,7 +26,7 @@ public class FieldPapersPlugin extends Plugin
     {
         super(info);
 
-        MainMenu menu = Main.main.menu;
+        MainMenu menu = MainApplication.getMenu();
         JMenu fpMenu = menu.addMenu("Field Papers", tr("Field Papers"), KeyEvent.VK_K, menu.getDefaultMenuPos(), ht("/Plugin/FieldPapers"));
         fpMenu.add(new JMenuItem(new FieldPapersAddLayerAction()));
     }
