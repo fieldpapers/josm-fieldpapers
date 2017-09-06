@@ -38,14 +38,14 @@ public class FieldPapersAddLayerAction extends JosmAction {
         JPanel panel = new JPanel(new GridBagLayout());
 
         // snapshot URL selection
-        panel.add(new JLabel(tr("Enter a fieldpapers.org snapshot URL")), GBC.eol());
+        panel.add(new JLabel(tr("Enter a fieldpapers.org snapshot URL to download from")), GBC.eol());
         JosmTextField snapshotAddress = new JosmTextField(Main.pref.get("fieldpapers.last-used-id"));
         snapshotAddress.setToolTipText(tr("Enter an URL from where scanned map should be downloaded"));
         panel.add(snapshotAddress, GBC.eop().fill(GBC.BOTH));
 
         ExtendedDialog dialog = new ExtendedDialog(Main.parent,
                 tr("Download Snapshot"),
-                tr("Download URL"), tr("Cancel"))
+                tr("Download"), tr("Cancel"))
             .setContent(panel, false)
             .setButtonIcons("download", "cancel")
             .setToolTipTexts(
