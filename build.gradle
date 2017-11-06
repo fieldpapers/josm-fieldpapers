@@ -1,8 +1,8 @@
 plugins {
-  id "org.openstreetmap.josm.gradle.plugin" version "0.1.6"
+  id "org.openstreetmap.josm.gradle.plugin" version "0.1.9"
+  id 'eclipse'
+  id 'idea'
 }
-apply plugin: 'eclipse'
-apply plugin: 'idea'
 apply from: 'gradle/version-functions.gradle'
 
 sourceCompatibility = '1.8'
@@ -22,9 +22,7 @@ sourceSets {
   }
 }
 
-josm {
-  jarName = 'fieldpapers.jar'
-}
+archivesBaseName = 'fieldpapers'
 
 eclipse.project.name = 'JOSM-fieldpapers'
 eclipseClasspath.dependsOn cleanEclipseClasspath

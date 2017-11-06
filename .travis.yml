@@ -3,12 +3,12 @@ jdk:
 - openjdk8
 - oraclejdk8
 - oraclejdk9
-script: ./gradlew build compileMinJosmVersion && cp -T `find build/libs/*.jar | head -1` "build/libs/fieldpapers.jar"
+script: ./gradlew build compileMinJosmVersion
 deploy:
   provider: releases
   api-key:
     secure: GUDz8pgKvi5M6m4oCMJoKqKT3GjU42PYTF97ASRaPjxVTXH0kETdmV0zADZuzITo5X5uALozP3pRjrtnnDFMmyyo+KIhhNplKr7T5aLJQMwI+bLT+ioseRlxqxAHPILf9qZKKbJKEsKAOEQ8N8fDxI5oyivXICT15LLjrCVS6Z8=
-  file: build/libs/fieldpapers.jar
+  file: build/dist/fieldpapers.jar
   on:
     tags: true
     jdk: openjdk8
