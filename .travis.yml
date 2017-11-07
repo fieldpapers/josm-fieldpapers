@@ -14,6 +14,7 @@ deploy:
       jdk: openjdk8
       repo: iandees/josm-fieldpapers
   - provider: releases
+    skip_cleanup: true
     api-key: "$GH_TOKEN"
     file:
       - build/dist/fieldpapers.jar
