@@ -1,5 +1,5 @@
 plugins {
-  id "org.openstreetmap.josm.gradle.plugin" version "0.1.10"
+  id "org.openstreetmap.josm" version "0.3.1"
   id 'eclipse'
   id 'idea'
 }
@@ -23,8 +23,13 @@ sourceSets {
 }
 
 archivesBaseName = 'fieldpapers'
-josm.manifest {
-  oldVersionDownloadLink 10273, 'v0.4.2', new URL('https://github.com/floscher/josm-fieldpapers/releases/download/v0.4.2/fieldpapers.jar')
+josm {
+  i18n {
+      pathTransformer = getGithubPathTransformer('fieldpapers/josm-fieldpapers')
+  }
+  manifest {
+    oldVersionDownloadLink 10273, 'v0.4.2', new URL('https://github.com/floscher/josm-fieldpapers/releases/download/v0.4.2/fieldpapers.jar')
+  }
 }
 
 eclipse.project.name = 'JOSM-fieldpapers'
