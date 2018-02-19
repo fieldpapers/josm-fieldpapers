@@ -33,7 +33,7 @@ import org.openstreetmap.josm.tools.Utils;
 public class FieldPapersAddLayerAction extends JosmAction {
 
     public FieldPapersAddLayerAction() {
-        super(tr("Scanned Map..."), "fieldpapers",
+        super(tr("FieldPapers snapshot"), "fieldpapers",
             tr("Display a map that was previously scanned and uploaded to fieldpapers.org"), null, false);
     }
 
