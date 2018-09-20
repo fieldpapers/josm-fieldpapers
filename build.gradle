@@ -1,12 +1,9 @@
 plugins {
-  id "org.openstreetmap.josm" version "0.3.1"
-  id 'eclipse'
-  id 'idea'
+  id "java"
+  id "org.openstreetmap.josm" version "0.5.0"
 }
-apply from: 'gradle/version-functions.gradle'
 
 sourceCompatibility = '1.8'
-version = getVersionName()
 
 sourceSets {
   main {
@@ -25,17 +22,20 @@ sourceSets {
 archivesBaseName = 'fieldpapers'
 josm {
   i18n {
-      pathTransformer = getGithubPathTransformer('fieldpapers/josm-fieldpapers')
+      pathTransformer = getPathTransformer("github.com/fieldpapers/josm-fieldpapers/blob")
   }
   manifest {
     oldVersionDownloadLink 10273, 'v0.4.2', new URL('https://github.com/floscher/josm-fieldpapers/releases/download/v0.4.2/fieldpapers.jar')
   }
 }
 
-eclipse.project.name = 'JOSM-fieldpapers'
-eclipseClasspath.dependsOn cleanEclipseClasspath
-eclipseProject.dependsOn cleanEclipseProject
-
 tasks.withType(Javadoc) {
   failOnError false
+}
+
+tasks.withType(JavaCompile) {
+  options.compilerArgs += [
+    "-Xlint:all",
+    "-Xlint:-serial",
+  ]
 }
