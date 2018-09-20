@@ -17,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import org.openstreetmap.josm.Main;
 import org.openstreetmap.josm.actions.JosmAction;
 import org.openstreetmap.josm.data.Bounds;
 import org.openstreetmap.josm.data.coor.LatLon;
@@ -42,11 +41,11 @@ public class FieldPapersAddLayerAction extends JosmAction {
 
         // snapshot URL selection
         panel.add(new JLabel(tr("Enter a fieldpapers.org snapshot URL to download from")), GBC.eol());
-        JosmTextField snapshotAddress = new JosmTextField(Main.pref.get("fieldpapers.last-used-id"));
+        JosmTextField snapshotAddress = new JosmTextField(FieldPapersPlugin.LAST_USED_ID.get());
         snapshotAddress.setToolTipText(tr("Enter an URL from where scanned map should be downloaded"));
         panel.add(snapshotAddress, GBC.eop().fill(GBC.BOTH));
 
-        ExtendedDialog dialog = new ExtendedDialog(Main.parent,
+        ExtendedDialog dialog = new ExtendedDialog(MainApplication.getMainFrame(),
                 tr("Download Snapshot"),
                 tr("Download"), tr("Cancel"))
             .setContent(panel, false)
@@ -64,7 +63,7 @@ public class FieldPapersAddLayerAction extends JosmAction {
         if (url == null || url.equals("")) return;
 
         if (!url.startsWith("http")) {
-            url = Main.pref.get("fieldpapers-base-url", "http://fieldpapers.org/") + "snapshots/" + url;
+            url = FieldPapersPlugin.BASE_URL.get() + "snapshots/" + url;
         }
 
         try {
@@ -88,7 +87,7 @@ public class FieldPapersAddLayerAction extends JosmAction {
             double north = bounds.getJsonNumber(3).doubleValue();
 
             // save this atlas as the
-            Main.pref.put("fieldpapers.last-used-id", id);
+            FieldPapersPlugin.LAST_USED_ID.put(id);
 
             Bounds b = new Bounds(new LatLon(south, west), new LatLon(north, east));
 
@@ -97,7 +96,7 @@ public class FieldPapersAddLayerAction extends JosmAction {
 
         } catch (IOException ex) {
             Logging.error(ex);
-            JOptionPane.showMessageDialog(Main.parent,tr("Could not read information for the id \"{0}\" from fieldpapers.org", url));
+            JOptionPane.showMessageDialog(MainApplication.getMainFrame(), tr("Could not read information for the id \"{0}\" from fieldpapers.org", url));
         }
     }
 
