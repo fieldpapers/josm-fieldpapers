@@ -1,3 +1,5 @@
+# josm-fieldpapers
+
 A plugin for displaying tiled, scanned maps from fieldpapers.org.
 
 [![Travis CI build status](https://img.shields.io/travis/fieldpapers/josm-fieldpapers/master.svg?style=flat-square)](https://travis-ci.org/fieldpapers/josm-fieldpapers)
