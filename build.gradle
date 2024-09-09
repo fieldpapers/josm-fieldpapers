@@ -3,7 +3,7 @@ plugins {
   id "org.openstreetmap.josm" version "0.8.2"
 }
 
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 
 sourceSets {
   main {
