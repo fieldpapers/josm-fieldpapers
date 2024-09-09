@@ -1,6 +1,6 @@
 plugins {
   id "java"
-  id "org.openstreetmap.josm" version "0.5.0"
+  id "org.openstreetmap.josm" version "0.8.2"
 }
 
 sourceCompatibility = '1.8'
@@ -22,10 +22,11 @@ sourceSets {
 archivesBaseName = 'fieldpapers'
 josm {
   i18n {
-      pathTransformer = getPathTransformer("github.com/fieldpapers/josm-fieldpapers/blob")
+      pathTransformer = getPathTransformer(project.projectDir, "github.com/fieldpapers/josm-fieldpapers/blob")
   }
   manifest {
     oldVersionDownloadLink 10273, 'v0.4.2', new URL('https://github.com/floscher/josm-fieldpapers/releases/download/v0.4.2/fieldpapers.jar')
+    oldVersionDownloadLink 14140, 'v0.5.0', new URL('https://github.com/fieldpapers/josm-fieldpapers/releases/download/v0.5.0/fieldpapers.jar')
   }
 }
 
