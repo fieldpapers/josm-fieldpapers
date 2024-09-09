@@ -71,7 +71,7 @@ public class FieldPapersAddLayerAction extends JosmAction {
             JsonObject metadata = getMetadata(url);
 
             if (metadata == null || metadata.getJsonString("tilejson_url") == null) {
-                JOptionPane.showMessageDialog(MainApplication.getMainFrame(), tr("Could not read information for \"{0}\" from fieldpapers.org", url));
+                JOptionPane.showMessageDialog(MainApplication.getMainFrame(), tr("Could not read information from fieldpapers.org. Make sure you're using the URL for a Snapshot, not Atlas.", url));
                 return;
             }
 
