@@ -70,6 +70,11 @@ public class FieldPapersAddLayerAction extends JosmAction {
             // fetch metadata
             JsonObject metadata = getMetadata(url);
 
+            if (metadata == null || metadata.getJsonString("tilejson_url") == null) {
+                JOptionPane.showMessageDialog(MainApplication.getMainFrame(), tr("Could not read information for \"{0}\" from fieldpapers.org", url));
+                return;
+            }
+
             String tileJsonUrl = metadata.getJsonString("tilejson_url").getString();
             String id = metadata.getJsonString("id").getString();
 
@@ -86,7 +91,7 @@ public class FieldPapersAddLayerAction extends JosmAction {
             double east = bounds.getJsonNumber(2).doubleValue();
             double north = bounds.getJsonNumber(3).doubleValue();
 
-            // save this atlas as the
+            // save this atlas ID as the last used atlas
             FieldPapersPlugin.LAST_USED_ID.put(id);
 
             Bounds b = new Bounds(new LatLon(south, west), new LatLon(north, east));
@@ -96,7 +101,7 @@ public class FieldPapersAddLayerAction extends JosmAction {
 
         } catch (IOException ex) {
             Logging.error(ex);
-            JOptionPane.showMessageDialog(MainApplication.getMainFrame(), tr("Could not read information for the id \"{0}\" from fieldpapers.org", url));
+            JOptionPane.showMessageDialog(MainApplication.getMainFrame(), tr("Could not read information for \"{0}\" from fieldpapers.org", url));
         }
     }
 
