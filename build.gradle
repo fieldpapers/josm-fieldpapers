@@ -20,8 +20,8 @@ sourceSets {
 }
 
 archivesBaseName = 'fieldpapers'
+version = '0.6.0'
 josm {
-  version = '0.5.0'
   i18n {
       pathTransformer = getPathTransformer(project.projectDir, "github.com/fieldpapers/josm-fieldpapers/blob")
   }
