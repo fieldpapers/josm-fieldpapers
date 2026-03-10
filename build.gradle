@@ -1,9 +1,19 @@
-plugins {
-  id "java"
-  id "org.openstreetmap.josm" version "0.8.2"
+buildscript {
+  repositories {
+    maven { url 'https://jitpack.io' }
+    gradlePluginPortal()
+  }
+  dependencies {
+    classpath 'com.github.iandees.gradle-josm-plugin:gradle-josm-plugin:v0.8.3'
+  }
 }
 
-sourceCompatibility = '11'
+apply plugin: 'java'
+apply plugin: 'org.openstreetmap.josm'
+
+java {
+  sourceCompatibility = JavaVersion.VERSION_11
+}
 
 sourceSets {
   main {
@@ -19,7 +29,9 @@ sourceSets {
   }
 }
 
-archivesBaseName = 'fieldpapers'
+base {
+  archivesName = 'fieldpapers'
+}
 version = '0.6.0'
 josm {
   i18n {
